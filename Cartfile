@@ -1,1 +1,2 @@
 github "benjaminsnorris/VersionNumber" ~> 1.0
+github "benjaminsnorris/DeviceInfo" == 0.1

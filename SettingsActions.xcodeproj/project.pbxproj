@@ -12,6 +12,7 @@
 		709C3E2F1CA5B33A0058CCE8 /* SettingsActionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709C3E2E1CA5B33A0058CCE8 /* SettingsActionsTests.swift */; };
 		709C3E3C1CA5B4C60058CCE8 /* VersionNumber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 709C3E3B1CA5B4C60058CCE8 /* VersionNumber.framework */; };
 		709C3E3F1CA5B5A70058CCE8 /* SettingsActionsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709C3E3E1CA5B5A70058CCE8 /* SettingsActionsService.swift */; };
+		709C3E721CA5C5290058CCE8 /* DeviceInfo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 709C3E711CA5C5290058CCE8 /* DeviceInfo.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +35,7 @@
 		709C3E391CA5B4090058CCE8 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		709C3E3B1CA5B4C60058CCE8 /* VersionNumber.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = VersionNumber.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		709C3E3E1CA5B5A70058CCE8 /* SettingsActionsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsActionsService.swift; sourceTree = "<group>"; };
+		709C3E711CA5C5290058CCE8 /* DeviceInfo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DeviceInfo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				709C3E721CA5C5290058CCE8 /* DeviceInfo.framework in Frameworks */,
 				709C3E3C1CA5B4C60058CCE8 /* VersionNumber.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -99,6 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				709C3E3B1CA5B4C60058CCE8 /* VersionNumber.framework */,
+				709C3E711CA5C5290058CCE8 /* DeviceInfo.framework */,
 			);
 			name = Frameworks;
 			path = ..;
