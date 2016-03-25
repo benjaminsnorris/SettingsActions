@@ -29,6 +29,7 @@
 		709C3E291CA5B33A0058CCE8 /* SettingsActionsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SettingsActionsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		709C3E2E1CA5B33A0058CCE8 /* SettingsActionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsActionsTests.swift; sourceTree = "<group>"; };
 		709C3E301CA5B33A0058CCE8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../SupportingFiles/SettingsActionsTests/Info.plist; sourceTree = "<group>"; };
+		709C3E391CA5B4090058CCE8 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +54,7 @@
 		709C3E151CA5B33A0058CCE8 = {
 			isa = PBXGroup;
 			children = (
+				709C3E391CA5B4090058CCE8 /* Package.swift */,
 				709C3E211CA5B33A0058CCE8 /* Sources */,
 				709C3E2D1CA5B33A0058CCE8 /* Tests */,
 				709C3E201CA5B33A0058CCE8 /* Products */,
@@ -311,6 +313,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -322,6 +325,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = design.bsn.SettingsActions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -329,6 +333,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
