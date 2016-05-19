@@ -49,8 +49,9 @@ public struct SettingsActionService {
         viewController.presentViewController(shareSheet, animated: true, completion: nil)
     }
     
-    public func rateApp(fromViewController viewController: UIViewController, iTunesItemIdentifier: Int, storeProductViewDelegate: SKStoreProductViewControllerDelegate, completion: (() -> Void)? = nil) {
-        showStoreProductView(fromViewController: viewController, iTunesItemIdentifier: iTunesItemIdentifier, storeProductViewDelegate: storeProductViewDelegate, completion: completion)
+    public func rateApp(fromViewController viewController: UIViewController, iTunesItemIdentifier: Int) {
+        guard let shareURL = NSURL(string: "itms-apps://itunes.apple.com/app/id\(iTunesItemIdentifier)") else { return }
+        UIApplication.sharedApplication().openURL(shareURL)
     }
     
     public func viewRelatedApp(fromViewController viewController: UIViewController, iTunesItemIdentifier: Int, storeProductViewDelegate: SKStoreProductViewControllerDelegate, completion: (() -> Void)? = nil) {
