@@ -40,7 +40,8 @@ public struct SettingsActionService {
         viewController.presentViewController(feedback, animated: true, completion: nil)
     }
     
-    public func shareApp(fromViewController viewController: UIViewController, message: String, appStoreAppPath: String, completion: ((activityType: String?) -> Void)? = nil) {
+    public func shareApp(fromViewController viewController: UIViewController, message: String? = nil, appStoreAppPath: String, completion: ((activityType: String?) -> Void)? = nil) {
+        let message = message ?? "Check out \(deviceInfoService.appName), an app I've really been enjoying."
         var activityItems: [AnyObject] = [message]
         if let appLink = NSURL(string: appStoreAppPath) {
             activityItems.append(appLink)
