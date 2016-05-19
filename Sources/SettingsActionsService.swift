@@ -17,6 +17,11 @@ public struct SettingsActionService {
     var deviceInfoService = DeviceInfoService()
     
     
+    // MARK: - Constants
+    
+    private let ratingLinkPathPrefix = "itms-apps://itunes.apple.com/app/id"
+    
+    
     // MARK: - Initializers
     
     public init() { }
@@ -50,8 +55,13 @@ public struct SettingsActionService {
     }
     
     public func rateApp(fromViewController viewController: UIViewController, iTunesItemIdentifier: Int) {
-        guard let shareURL = NSURL(string: "itms-apps://itunes.apple.com/app/id\(iTunesItemIdentifier)") else { return }
+        guard let shareURL = NSURL(string: "\(ratingLinkPathPrefix)\(iTunesItemIdentifier)") else { return }
         UIApplication.sharedApplication().openURL(shareURL)
+    }
+    
+    public func canRateApp() -> Bool {
+        guard let shareURL = NSURL(string: ratingLinkPathPrefix) else { return false }
+        return UIApplication.sharedApplication().canOpenURL(shareURL)
     }
     
     public func viewRelatedApp(fromViewController viewController: UIViewController, iTunesItemIdentifier: Int, storeProductViewDelegate: SKStoreProductViewControllerDelegate, completion: (() -> Void)? = nil) {
