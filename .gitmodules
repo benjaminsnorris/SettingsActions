@@ -1,6 +1,3 @@
-[submodule "Carthage/Checkouts/VersionNumber"]
-	path = Carthage/Checkouts/VersionNumber
-	url = https://github.com/benjaminsnorris/VersionNumber.git
 [submodule "Carthage/Checkouts/DeviceInfo"]
 	path = Carthage/Checkouts/DeviceInfo
 	url = https://github.com/benjaminsnorris/DeviceInfo.git

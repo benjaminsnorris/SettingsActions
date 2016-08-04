@@ -5,9 +5,6 @@
       location = "container:SettingsActions.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Carthage/Checkouts/VersionNumber/VersionNumber.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:Carthage/Checkouts/DeviceInfo/DeviceInfo.xcodeproj">
    </FileRef>
 </Workspace>
