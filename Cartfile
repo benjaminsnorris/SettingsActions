@@ -1,2 +1,1 @@
-github "benjaminsnorris/VersionNumber" ~> 1.1
-github "benjaminsnorris/DeviceInfo" == 0.2
+github "benjaminsnorris/DeviceInfo" ~> 1.0
