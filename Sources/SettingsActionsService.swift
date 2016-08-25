@@ -41,16 +41,16 @@ public struct SettingsActionService {
         viewController.present(feedback, animated: true, completion: nil)
     }
     
-    public func shareApp(fromViewController viewController: UIViewController, message: String? = nil, appStoreAppPath: String, completion: ((activityType: String?) -> Void)? = nil) {
+    public func shareApp(fromViewController viewController: UIViewController, message: String? = nil, appStoreAppPath: String, completion: ((_ activityType: String?) -> Void)? = nil) {
         let message = message ?? "Check out \(deviceInfoService.appName), an app I've really been enjoying."
-        var activityItems: [AnyObject] = [message]
+        var activityItems: [Any] = [message]
         if let appLink = URL(string: appStoreAppPath) {
             activityItems.append(appLink)
         }
         let shareSheet = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         shareSheet.completionWithItemsHandler = { activityType, completed, returnedItems, activityError in
             if completed {
-                completion?(activityType: activityType)
+                completion?(activityType?.rawValue)
             }
         }
         viewController.present(shareSheet, animated: true, completion: nil)
