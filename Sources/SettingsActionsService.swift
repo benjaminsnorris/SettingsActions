@@ -20,7 +20,7 @@ public struct SettingsActionService {
     
     // MARK: - Constants
     
-    private let ratingLinkPathPrefix = "itms-apps://itunes.apple.com/app/id"
+    fileprivate let ratingLinkPathPrefix = "itms-apps://itunes.apple.com/app/id"
     
     
     // MARK: - Initializers
