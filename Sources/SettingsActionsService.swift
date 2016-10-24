@@ -15,7 +15,6 @@ public struct SettingsActionService {
     // MARK: - Internal properties
     
     var deviceInfoService = DeviceInfoService()
-    var versionNumberService = VersionNumberService()
     
     
     // MARK: - Constants
@@ -35,7 +34,7 @@ public struct SettingsActionService {
         feedback.mailComposeDelegate = mailComposeDelegate
         feedback.setToRecipients(emailAddresses)
         feedback.setSubject("Some thoughts on \(deviceInfoService.appName)")
-        let supportInfo = "iOS \(deviceInfoService.osVersion) on \(deviceInfoService.deviceName) \nLocale: \(deviceInfoService.locale) (\(deviceInfoService.language)) \n\(versionNumberService.appNameWithVersion))"
+        let supportInfo = "iOS \(deviceInfoService.osVersion) on \(deviceInfoService.deviceName) \nLocale: \(deviceInfoService.locale) (\(deviceInfoService.language)) \n\(deviceInfoService.appNameWithVersion))"
         let messageText = "Here are my thoughts:\n\n\n\n\n\n--------------------------------\nDeveloper Support Information\n\n\(supportInfo)\n--------------------------------\n"
         feedback.setMessageBody(messageText, isHTML: false)
         viewController.present(feedback, animated: true, completion: nil)
@@ -43,9 +42,9 @@ public struct SettingsActionService {
     
     public func shareApp(fromViewController viewController: UIViewController, message: String? = nil, appStoreAppPath: String, completion: ((_ activityType: String?) -> Void)? = nil) {
         let message = message ?? "Check out \(deviceInfoService.appName), an app I've really been enjoying."
-        var activityItems: [AnyObject] = [message]
+        var activityItems: [Any] = [message]
         if let appLink = URL(string: appStoreAppPath) {
-            activityItems.append(appLink as AnyObject)
+            activityItems.append(appLink as Any)
         }
         let shareSheet = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         shareSheet.completionWithItemsHandler = { activityType, completed, returnedItems, activityError in
