@@ -34,7 +34,7 @@ public struct SettingsActionService {
         feedback.mailComposeDelegate = mailComposeDelegate
         feedback.setToRecipients(emailAddresses)
         feedback.setSubject("Some thoughts on \(deviceInfoService.appName)")
-        let supportInfo = "iOS \(deviceInfoService.osVersion) on \(deviceInfoService.deviceName) \nLocale: \(deviceInfoService.locale) (\(deviceInfoService.language)) \n\(deviceInfoService.appNameWithVersion))"
+        let supportInfo = "iOS \(deviceInfoService.osVersion) on \(deviceInfoService.deviceModelName) \nLocale: \(deviceInfoService.locale) (\(deviceInfoService.language)) \n\(deviceInfoService.appNameWithVersion))"
         let messageText = "Here are my thoughts:\n\n\n\n\n\n--------------------------------\nDeveloper Support Information\n\n\(supportInfo)\n--------------------------------\n"
         feedback.setMessageBody(messageText, isHTML: false)
         viewController.present(feedback, animated: true, completion: nil)
