@@ -30,6 +30,7 @@ public struct SettingsActionService {
     // MARK: - Public Functions
     
     public func sendFeedback(fromViewController viewController: UIViewController, emailAddresses: [String], mailComposeDelegate: MFMailComposeViewControllerDelegate) {
+        guard MFMailComposeViewController.canSendMail() else { return }
         let feedback = MFMailComposeViewController()
         feedback.mailComposeDelegate = mailComposeDelegate
         feedback.setToRecipients(emailAddresses)
