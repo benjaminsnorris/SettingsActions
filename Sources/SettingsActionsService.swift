@@ -1,7 +1,7 @@
 /*
  |  _   ____   ____   _
- | ⎛ |‾|  ⚈ |-| ⚈  |‾| ⎞
- | ⎝ |  ‾‾‾‾| |‾‾‾‾  | ⎠
+ | | |‾|  ⚈ |-| ⚈  |‾| |
+ | | |  ‾‾‾‾| |‾‾‾‾  | |
  |  ‾        ‾        ‾
  */
 
@@ -19,7 +19,7 @@ public struct SettingsActionService {
     
     // MARK: - Constants
     
-    fileprivate let ratingLinkPathPrefix = "itms-apps://itunes.apple.com/app/id"
+    fileprivate let appLinkPathPrefix = "itms-apps://itunes.apple.com/app/id"
     
     
     // MARK: - Initializers
@@ -29,7 +29,7 @@ public struct SettingsActionService {
     
     // MARK: - Public Functions
     
-    public func sendFeedback(fromViewController viewController: UIViewController, emailAddresses: [String], mailComposeDelegate: MFMailComposeViewControllerDelegate) {
+    public func sendFeedback(from viewController: UIViewController, emailAddresses: [String], mailComposeDelegate: MFMailComposeViewControllerDelegate) {
         guard MFMailComposeViewController.canSendMail() else { return }
         let feedback = MFMailComposeViewController()
         feedback.mailComposeDelegate = mailComposeDelegate
@@ -41,7 +41,7 @@ public struct SettingsActionService {
         viewController.present(feedback, animated: true, completion: nil)
     }
     
-    public func shareApp(fromViewController viewController: UIViewController, message: String? = nil, appStoreAppPath: String, completion: ((_ activityType: String?) -> Void)? = nil) {
+    public func shareApp(from viewController: UIViewController, message: String? = nil, appStoreAppPath: String, completion: ((_ activityType: String?) -> Void)? = nil) {
         let message = message ?? "Check out \(deviceInfoService.appName), an app I've really been enjoying."
         var activityItems: [Any] = [message]
         if let appLink = URL(string: appStoreAppPath) {
@@ -56,18 +56,23 @@ public struct SettingsActionService {
         viewController.present(shareSheet, animated: true, completion: nil)
     }
     
-    public func rateApp(fromViewController viewController: UIViewController, iTunesItemIdentifier: Int) {
-        guard let shareURL = URL(string: "\(ratingLinkPathPrefix)\(iTunesItemIdentifier)") else { return }
-        UIApplication.shared.openURL(shareURL)
+    public func rateApp(from viewController: UIViewController, iTunesItemIdentifier: Int) {
+        guard let appURL = appLink(with: iTunesItemIdentifier) else { return }
+        UIApplication.shared.openURL(appURL)
     }
     
     public func canRateApp() -> Bool {
-        guard let shareURL = URL(string: ratingLinkPathPrefix) else { return false }
+        guard let shareURL = URL(string: appLinkPathPrefix) else { return false }
         return UIApplication.shared.canOpenURL(shareURL)
     }
     
-    public func viewRelatedApp(fromViewController viewController: UIViewController, iTunesItemIdentifier: Int, storeProductViewDelegate: SKStoreProductViewControllerDelegate, completion: (() -> Void)? = nil) {
-        showStoreProductView(fromViewController: viewController, iTunesItemIdentifier: iTunesItemIdentifier, storeProductViewDelegate: storeProductViewDelegate, completion: completion)
+    public func viewRelatedApp(from viewController: UIViewController, iTunesItemIdentifier: Int, storeProductViewDelegate: SKStoreProductViewControllerDelegate? = nil, completion: (() -> Void)? = nil) {
+        if let storeProductViewDelegate = storeProductViewDelegate {
+            showStoreProductView(from: viewController, iTunesItemIdentifier: iTunesItemIdentifier, storeProductViewDelegate: storeProductViewDelegate, completion: completion)
+        } else {
+            guard let appURL = appLink(with: iTunesItemIdentifier) else { return }
+            UIApplication.shared.openURL(appURL)
+        }
     }
     
 }
@@ -77,7 +82,7 @@ public struct SettingsActionService {
 
 private extension SettingsActionService {
     
-    func showStoreProductView(fromViewController viewController: UIViewController, iTunesItemIdentifier: Int, storeProductViewDelegate: SKStoreProductViewControllerDelegate, completion: (() -> Void)? = nil) {
+    func showStoreProductView(from viewController: UIViewController, iTunesItemIdentifier: Int, storeProductViewDelegate: SKStoreProductViewControllerDelegate, completion: (() -> Void)? = nil) {
         let store = SKStoreProductViewController()
         store.delegate = storeProductViewDelegate
         store.loadProduct(withParameters: [SKStoreProductParameterITunesItemIdentifier: iTunesItemIdentifier]) { success, error in
@@ -85,6 +90,11 @@ private extension SettingsActionService {
                 completion?()
             }
         }
+    }
+    
+    func appLink(with iTunesItemIdentifier: Int) -> URL? {
+        guard let appURL = URL(string: "\(appLinkPathPrefix)\(iTunesItemIdentifier)") else { return nil }
+        return appURL
     }
     
 }
