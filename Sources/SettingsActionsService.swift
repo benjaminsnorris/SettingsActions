@@ -41,7 +41,7 @@ public struct SettingsActionService {
         viewController.present(feedback, animated: true, completion: nil)
     }
     
-    public func shareApp(from viewController: UIViewController, message: String? = nil, appStoreAppPath: String, completion: ((_ activityType: String?) -> Void)? = nil) {
+    public func shareApp(from viewController: UIViewController, sourceView: UIView?, message: String? = nil, appStoreAppPath: String, completion: ((_ activityType: String?) -> Void)? = nil) {
         let message = message ?? "Check out \(deviceInfoService.appName), an app I've really been enjoying."
         var activityItems: [Any] = [message]
         if let appLink = URL(string: appStoreAppPath) {
@@ -52,6 +52,12 @@ public struct SettingsActionService {
             if completed {
                 completion?(activityType.map { $0.rawValue })
             }
+        }
+        if let barButton = sourceView as? UIBarButtonItem {
+            shareSheet.popoverPresentationController?.barButtonItem = barButton
+        } else if let sourceView = sourceView {
+            shareSheet.popoverPresentationController?.sourceView = sourceView.superview
+            shareSheet.popoverPresentationController?.sourceRect = sourceView.frame
         }
         viewController.present(shareSheet, animated: true, completion: nil)
     }
