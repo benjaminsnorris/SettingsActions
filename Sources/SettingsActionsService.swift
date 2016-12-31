@@ -10,7 +10,7 @@ import MessageUI
 import StoreKit
 import DeviceInfo
 
-public struct SettingsActionService {
+public class SettingsActionService: NSObject {
     
     // MARK: - Internal properties
     
@@ -22,17 +22,21 @@ public struct SettingsActionService {
     fileprivate let appLinkPathPrefix = "itms-apps://itunes.apple.com/app/id"
     
     
-    // MARK: - Initializers
-    
-    public init() { }
-    
-    
     // MARK: - Public Functions
     
-    public func sendFeedback(from viewController: UIViewController, emailAddresses: [String], mailComposeDelegate: MFMailComposeViewControllerDelegate) {
+    /**
+     Presents mail compose view controller prefilled with helpful information.
+     
+     - parameters:
+        - viewController:       Originating view controller that can be used to present
+        - emailAddresses:       Recipients for feedback email
+        - mailComposeDelegate:  Optional delegate for responding to mail completing. If `nil`,
+            the service objecct will be the delegate.
+     */
+    public func sendFeedback(from viewController: UIViewController, emailAddresses: [String], mailComposeDelegate: MFMailComposeViewControllerDelegate? = nil) {
         guard MFMailComposeViewController.canSendMail() else { return }
         let feedback = MFMailComposeViewController()
-        feedback.mailComposeDelegate = mailComposeDelegate
+        feedback.mailComposeDelegate = mailComposeDelegate ?? self
         feedback.setToRecipients(emailAddresses)
         feedback.setSubject("Some thoughts on \(deviceInfoService.appName)")
         let supportInfo = "iOS \(deviceInfoService.osVersion) on \(deviceInfoService.deviceModelName) \nLocale: \(deviceInfoService.locale) (\(deviceInfoService.language)) \n\(deviceInfoService.appNameWithVersion))"
@@ -41,8 +45,28 @@ public struct SettingsActionService {
         viewController.present(feedback, animated: true, completion: nil)
     }
     
+    /**
+     Evaluates whether the device is able to send email.
+     
+     - returns: True if device can send email
+     */
+    public func canSendFeedback() -> Bool {
+        return MFMailComposeViewController.canSendMail()
+    }
+    
+    /**
+     Launches share sheet with message and link to app.
+     
+     - parameters:
+        - viewController:   Originating view controller that can be used to present
+        - sourceView:       View that was touched triggering the share, used for iPad popover anchor
+        - message:          Optional custom message. If `nil`, message will be "Check out [App Name],
+            an app I’ve really been enjoying."
+        - appStoreAppPath:  String of link to app in app store
+        - completion:       Optional closure to execute when user finishes sharing
+     */
     public func shareApp(from viewController: UIViewController, sourceView: UIView?, message: String? = nil, appStoreAppPath: String, completion: ((_ activityType: String?) -> Void)? = nil) {
-        let message = message ?? "Check out \(deviceInfoService.appName), an app I've really been enjoying."
+        let message = message ?? "Check out \(deviceInfoService.appName), an app I’ve really been enjoying."
         var activityItems: [Any] = [message]
         if let appLink = URL(string: appStoreAppPath) {
             activityItems.append(appLink as Any)
@@ -62,23 +86,75 @@ public struct SettingsActionService {
         viewController.present(shareSheet, animated: true, completion: nil)
     }
     
+    /**
+     Open App Store to app for users to leave review.
+     
+     - parameters:
+        - viewController:       Originating view controller that can be used to present
+        - iTunesItemIdentifier: ID of app in iTunes Connect
+     */
     public func rateApp(from viewController: UIViewController, iTunesItemIdentifier: Int) {
         guard let appURL = appLink(with: iTunesItemIdentifier) else { return }
         UIApplication.shared.openURL(appURL)
     }
     
-    public func canRateApp() -> Bool {
+    /**
+     Evaluates whether the device is able to open the app store.
+     
+     - returns: True if device can open link to App Store
+     */
+    public func canLaunchAppStore() -> Bool {
         guard let shareURL = URL(string: appLinkPathPrefix) else { return false }
         return UIApplication.shared.canOpenURL(shareURL)
     }
     
-    public func viewRelatedApp(from viewController: UIViewController, iTunesItemIdentifier: Int, storeProductViewDelegate: SKStoreProductViewControllerDelegate? = nil, completion: (() -> Void)? = nil) {
-        if let storeProductViewDelegate = storeProductViewDelegate {
-            showStoreProductView(from: viewController, iTunesItemIdentifier: iTunesItemIdentifier, storeProductViewDelegate: storeProductViewDelegate, completion: completion)
-        } else {
+    /**
+     Either shows a store product view controller for the related app or opens the App Store to the app.
+     
+     - parameters:
+        - viewController:           Originating view controller that can be used to present
+        - iTunesItemIdentifier:     ID of app in iTunes Connect
+        - storeProductViewDelegate: Optional delegate to handle the user closing teh store product view.
+            If `nil`, the service object will be the delegate.
+        - launchAppStore:           Flag to determine whether to open the App Store or display product view.
+            Defaults to `false`.
+        - completion:               Optional closure to execute after product view is presented
+     */
+    public func viewRelatedApp(from viewController: UIViewController, iTunesItemIdentifier: Int, storeProductViewDelegate: SKStoreProductViewControllerDelegate? = nil, launchAppStore: Bool = false, completion: (() -> Void)? = nil) {
+        if launchAppStore {
             guard let appURL = appLink(with: iTunesItemIdentifier) else { return }
             UIApplication.shared.openURL(appURL)
+        } else {
+            let store = SKStoreProductViewController()
+            store.delegate = storeProductViewDelegate ?? self
+            store.loadProduct(withParameters: [SKStoreProductParameterITunesItemIdentifier: iTunesItemIdentifier]) { success, error in
+                viewController.present(store, animated: true) {
+                    completion?()
+                }
+            }
         }
+    }
+    
+}
+
+
+// MARK: - Mail compose delegate
+
+extension SettingsActionService: MFMailComposeViewControllerDelegate {
+    
+    public func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+}
+
+
+// MARK: - Store product view controller delegate
+
+extension SettingsActionService: SKStoreProductViewControllerDelegate {
+    
+    public func productViewControllerDidFinish(_ viewController: SKStoreProductViewController) {
+        viewController.dismiss(animated: true, completion: nil)
     }
     
 }
@@ -87,16 +163,6 @@ public struct SettingsActionService {
 // MARK: - Private functions
 
 private extension SettingsActionService {
-    
-    func showStoreProductView(from viewController: UIViewController, iTunesItemIdentifier: Int, storeProductViewDelegate: SKStoreProductViewControllerDelegate, completion: (() -> Void)? = nil) {
-        let store = SKStoreProductViewController()
-        store.delegate = storeProductViewDelegate
-        store.loadProduct(withParameters: [SKStoreProductParameterITunesItemIdentifier: iTunesItemIdentifier]) { success, error in
-            viewController.present(store, animated: true) {
-                completion?()
-            }
-        }
-    }
     
     func appLink(with iTunesItemIdentifier: Int) -> URL? {
         guard let appURL = URL(string: "\(appLinkPathPrefix)\(iTunesItemIdentifier)") else { return nil }
