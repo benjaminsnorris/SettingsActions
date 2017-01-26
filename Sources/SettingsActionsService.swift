@@ -135,6 +135,14 @@ public class SettingsActionService: NSObject {
         }
     }
     
+    /**
+     Opens Settings to app-specific settings.
+     */
+    public func openAppSettings() {
+        let settingsURL = URL(string: UIApplicationOpenSettingsURLString)!
+        UIApplication.shared.openURL(settingsURL)
+    }
+    
 }
 
 
