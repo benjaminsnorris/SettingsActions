@@ -173,7 +173,7 @@ extension SettingsActionService: SKStoreProductViewControllerDelegate {
 private extension SettingsActionService {
     
     func appLink(with iTunesItemIdentifier: Int) -> URL? {
-        guard let appURL = URL(string: "\(appLinkPathPrefix)\(iTunesItemIdentifier)") else { return nil }
+        guard let appURL = URL(string: "\(appLinkPathPrefix)\(iTunesItemIdentifier)?action=write-review") else { return nil }
         return appURL
     }
     
