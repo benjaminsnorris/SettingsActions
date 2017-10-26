@@ -94,7 +94,7 @@ public class SettingsActionService: NSObject {
         - iTunesItemIdentifier: ID of app in iTunes Connect
      */
     public func rateApp(from viewController: UIViewController, iTunesItemIdentifier: Int) {
-        guard let appURL = appLink(with: iTunesItemIdentifier) else { return }
+        guard let appURL = appLink(with: iTunesItemIdentifier, forReview: true) else { return }
         UIApplication.shared.openURL(appURL)
     }
     
@@ -176,8 +176,12 @@ extension SettingsActionService: SKStoreProductViewControllerDelegate {
 
 private extension SettingsActionService {
     
-    func appLink(with iTunesItemIdentifier: Int) -> URL? {
-        guard let appURL = URL(string: "\(appLinkPathPrefix)\(iTunesItemIdentifier)?action=write-review") else { return nil }
+    func appLink(with iTunesItemIdentifier: Int, forReview: Bool = false) -> URL? {
+        var urlString = "\(appLinkPathPrefix)\(iTunesItemIdentifier)"
+        if forReview {
+            urlString += "?action=write-review"
+        }
+        guard let appURL = URL(string: urlString) else { return nil }
         return appURL
     }
     
