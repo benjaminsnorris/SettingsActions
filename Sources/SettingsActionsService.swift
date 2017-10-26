@@ -139,6 +139,10 @@ public class SettingsActionService: NSObject {
      Opens Settings to app-specific settings.
      */
     public func openAppSettings() {
+        SettingsActionService.openAppSettings()
+    }
+    
+    public static func openAppSettings() {
         let settingsURL = URL(string: UIApplicationOpenSettingsURLString)!
         UIApplication.shared.openURL(settingsURL)
     }
@@ -175,6 +179,22 @@ private extension SettingsActionService {
     func appLink(with iTunesItemIdentifier: Int) -> URL? {
         guard let appURL = URL(string: "\(appLinkPathPrefix)\(iTunesItemIdentifier)?action=write-review") else { return nil }
         return appURL
+    }
+    
+}
+
+
+// MARK: - UIAlertController settings action
+
+public extension UIAlertController {
+    
+    public func addSettings() {
+        addAction(UIAlertAction(title: NSLocalizedString("Settings", comment: "Settings button title"), style: .default) { _ in
+            if #available(iOS 10.0, *) {
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            }
+            SettingsActionService.openAppSettings()
+        })
     }
     
 }
