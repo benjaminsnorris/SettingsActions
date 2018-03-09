@@ -12,6 +12,12 @@ import DeviceInfo
 
 public class SettingsActionService: NSObject {
     
+    // MARK: - Shared service
+    
+    /// Shared service for use in short-lived objects
+    public static let shared = SettingsActionService()
+    
+    
     // MARK: - Internal properties
     
     var deviceInfoService = DeviceInfoService()
