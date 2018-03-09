@@ -30,10 +30,12 @@ public class SettingsActionService: NSObject {
      - parameters:
         - viewController:       Originating view controller that can be used to present
         - emailAddresses:       Recipients for feedback email
+        - logAttachment:        Plain text data object for logs
+        - imageAttachments:     Dictionary of image names and image data objects
         - mailComposeDelegate:  Optional delegate for responding to mail completing. If `nil`,
             the service objecct will be the delegate.
      */
-    public func sendFeedback(from viewController: UIViewController, emailAddresses: [String], mailComposeDelegate: MFMailComposeViewControllerDelegate? = nil) {
+    public func sendFeedback(from viewController: UIViewController, emailAddresses: [String], logAttachment: Data? = nil, imageAttachments: [String: Data] = [:], mailComposeDelegate: MFMailComposeViewControllerDelegate? = nil) {
         guard MFMailComposeViewController.canSendMail() else { return }
         let feedback = MFMailComposeViewController()
         feedback.mailComposeDelegate = mailComposeDelegate ?? self
@@ -42,6 +44,12 @@ public class SettingsActionService: NSObject {
         let supportInfo = "iOS \(deviceInfoService.osVersion) on \(deviceInfoService.deviceModelName) \nLocale: \(deviceInfoService.locale) (\(deviceInfoService.language)) \n\(deviceInfoService.appNameWithVersion)"
         let messageText = "Here are my thoughts:\n\n\n\n\n\n--------------------------------\nDeveloper Support Information\n\n\(supportInfo)\n--------------------------------\n"
         feedback.setMessageBody(messageText, isHTML: false)
+        if let logAttachment = logAttachment {
+            feedback.addAttachmentData(logAttachment, mimeType: "text/txt", fileName: "log.txt")
+        }
+        imageAttachments.forEach { attachment in
+            feedback.addAttachmentData(attachment.value, mimeType: "image/png", fileName: attachment.key + ".png")
+        }
         viewController.present(feedback, animated: true, completion: nil)
     }
     
