@@ -206,12 +206,14 @@ private extension SettingsActionService {
 
 public extension UIAlertController {
     
-    public func addSettings() {
+    public func addSettings(completion: (() -> Void)? = nil) {
         addAction(UIAlertAction(title: NSLocalizedString("Settings", comment: "Settings button title"), style: .default) { _ in
-            if #available(iOS 10.0, *) {
+            SettingsActionService.openAppSettings()
+            if let completion = completion {
+                completion()
+            } else if #available(iOS 10.0, *) {
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
             }
-            SettingsActionService.openAppSettings()
         })
     }
     
