@@ -169,6 +169,18 @@ public class SettingsActionService: NSObject {
 extension SettingsActionService: MFMailComposeViewControllerDelegate {
     
     public func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        if #available(iOS 10.0, *) {
+            switch result {
+            case .cancelled:
+                UISelectionFeedbackGenerator().selectionChanged()
+            case .sent:
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
+            case .saved:
+                UISelectionFeedbackGenerator().selectionChanged()
+            case .failed:
+                UINotificationFeedbackGenerator().notificationOccurred(.error)
+            }
+        }
         controller.dismiss(animated: true, completion: nil)
     }
     
