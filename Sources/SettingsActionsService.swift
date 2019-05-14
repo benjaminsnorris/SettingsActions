@@ -157,7 +157,7 @@ public class SettingsActionService: NSObject {
     }
     
     public static func openAppSettings() {
-        let settingsURL = URL(string: UIApplicationOpenSettingsURLString)!
+        let settingsURL = URL(string: UIApplication.openSettingsURLString)!
         UIApplication.shared.openURL(settingsURL)
     }
     
