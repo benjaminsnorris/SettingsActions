@@ -218,7 +218,7 @@ private extension SettingsActionService {
 
 public extension UIAlertController {
     
-    public func addSettings(completion: (() -> Void)? = nil) {
+    func addSettings(completion: (() -> Void)? = nil) {
         addAction(UIAlertAction(title: NSLocalizedString("Settings", comment: "Settings button title"), style: .default) { _ in
             SettingsActionService.openAppSettings()
             if let completion = completion {
