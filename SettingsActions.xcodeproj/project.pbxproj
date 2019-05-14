@@ -168,11 +168,12 @@
 				TargetAttributes = {
 					709C3E1E1CA5B33A0058CCE8 = {
 						CreatedOnToolsVersion = 7.3;
-						LastSwiftMigration = 0920;
+						LastSwiftMigration = "";
 					};
 					709C3E281CA5B33A0058CCE8 = {
 						CreatedOnToolsVersion = 7.3;
-						LastSwiftMigration = 0920;
+						DevelopmentTeam = M9Y5WF87VL;
+						LastSwiftMigration = "";
 					};
 				};
 			};
@@ -401,6 +402,7 @@
 		709C3E371CA5B33A0058CCE8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = M9Y5WF87VL;
 				INFOPLIST_FILE = SupportingFiles/SettingsActionsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = design.bsn.SettingsActionsTests;
@@ -413,6 +415,7 @@
 		709C3E381CA5B33A0058CCE8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = M9Y5WF87VL;
 				INFOPLIST_FILE = SupportingFiles/SettingsActionsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = design.bsn.SettingsActionsTests;
