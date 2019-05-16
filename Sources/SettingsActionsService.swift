@@ -179,6 +179,8 @@ extension SettingsActionService: MFMailComposeViewControllerDelegate {
                 UISelectionFeedbackGenerator().selectionChanged()
             case .failed:
                 UINotificationFeedbackGenerator().notificationOccurred(.error)
+            @unknown default:
+                break
             }
         }
         controller.dismiss(animated: true, completion: nil)
