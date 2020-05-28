@@ -74,12 +74,13 @@ public class SettingsActionService: NSObject {
      - parameters:
         - viewController:   Originating view controller that can be used to present
         - sourceView:       View that was touched triggering the share, used for iPad popover anchor
+        - sourceRect:       Frame of source view, used for iPad popover anchor
         - message:          Optional custom message. If `nil`, message will be "Check out [App Name],
             an app I’ve really been enjoying."
         - appStoreAppPath:  String of link to app in app store
         - completion:       Optional closure to execute when user finishes sharing
      */
-    public func shareApp(from viewController: UIViewController, sourceView: Any?, message: String? = nil, appStoreAppPath: String, completion: ((_ activityType: String?) -> Void)? = nil) {
+    public func shareApp(from viewController: UIViewController, sourceView: Any?, sourceRect: CGRect? = nil, message: String? = nil, appStoreAppPath: String, completion: ((_ activityType: String?) -> Void)? = nil) {
         let message = message ?? "Check out \(deviceInfoService.appName), an app I’ve really been enjoying."
         var activityItems: [Any] = [message]
         if let appLink = URL(string: appStoreAppPath) {
@@ -93,6 +94,9 @@ public class SettingsActionService: NSObject {
         }
         if let barButton = sourceView as? UIBarButtonItem {
             shareSheet.popoverPresentationController?.barButtonItem = barButton
+        } else if let sourceRect = sourceRect, let sourceView = sourceView as? UIView {
+            shareSheet.popoverPresentationController?.sourceView = sourceView
+            shareSheet.popoverPresentationController?.sourceRect = sourceRect
         } else if let sourceView = sourceView as? UIView {
             shareSheet.popoverPresentationController?.sourceView = sourceView.superview
             shareSheet.popoverPresentationController?.sourceRect = sourceView.frame
