@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "DeviceInfo",
+        "repositoryURL": "https://github.com/benjaminsnorris/DeviceInfo.git",
+        "state": {
+          "branch": null,
+          "revision": "27a088a5a80f61f34c0b8a96a01f925c146ee82a",
+          "version": "4.2.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

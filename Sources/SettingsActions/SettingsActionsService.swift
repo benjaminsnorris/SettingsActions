@@ -113,7 +113,7 @@ public class SettingsActionService: NSObject {
      */
     public func rateApp(from viewController: UIViewController, iTunesItemIdentifier: Int) {
         guard let appURL = appLink(with: iTunesItemIdentifier, forReview: true) else { return }
-        UIApplication.shared.openURL(appURL)
+        UIApplication.shared.open(appURL)
     }
     
     /**
@@ -141,7 +141,7 @@ public class SettingsActionService: NSObject {
     public func viewRelatedApp(from viewController: UIViewController, iTunesItemIdentifier: Int, storeProductViewDelegate: SKStoreProductViewControllerDelegate? = nil, launchAppStore: Bool = false, completion: (() -> Void)? = nil) {
         if launchAppStore {
             guard let appURL = appLink(with: iTunesItemIdentifier) else { return }
-            UIApplication.shared.openURL(appURL)
+            UIApplication.shared.open(appURL)
         } else {
             let store = SKStoreProductViewController()
             store.delegate = storeProductViewDelegate ?? self
@@ -162,7 +162,7 @@ public class SettingsActionService: NSObject {
     
     public static func openAppSettings() {
         let settingsURL = URL(string: UIApplication.openSettingsURLString)!
-        UIApplication.shared.openURL(settingsURL)
+        UIApplication.shared.open(settingsURL)
     }
     
 }
